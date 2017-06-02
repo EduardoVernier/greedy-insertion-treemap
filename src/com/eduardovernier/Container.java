@@ -3,18 +3,21 @@ package com.eduardovernier;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
+//  ---------
+//  | C |   |
+//  |---| R |
+//  | B |   |
+//  ---------
+
+
 public class Container {
 
     String id;
-    private Double weight;
-    Rectangle rectangle;
+    Double weight;
+    Rectangle rectangle = new Rectangle(0,0,0,0);
     Container central; // Container may contain another central inside it
     Container right;
     Container bottom;
-
-    public boolean isLeaf() {
-        return central == null && right == null && bottom == null;
-    }
 
     public Container(String id, Double weight) {
         this.id = id;
@@ -69,19 +72,78 @@ public class Container {
     }
 
     public double getCentralWeight() {
-
-        if (weight != -1) {
+        if (central == null) {
             return weight;
         } else {
-            double centralWeight = 0;
-            if (central != null) {
-                centralWeight += central.getFullWeight();
-            }
-            return centralWeight;
+            return central.getFullWeight();
         }
     }
 
     public void setWeight(Double weight) {
         this.weight = weight;
+    }
+
+    public void computeTreemap() {
+
+        if (right != null && bottom != null) {
+
+            double baseWidth = this.rectangle.width;
+            double baseHeight = this.rectangle.height;
+            // C coordinates
+            this.rectangle.width = ((this.getCentralWeight() + bottom.getFullWeight()) / (this.getCentralWeight() + bottom.getFullWeight() + right.getFullWeight())) * baseWidth;
+            this.rectangle.height = (this.getCentralWeight() / (this.getCentralWeight() + bottom.getFullWeight())) * baseHeight;
+
+            // B coordinates
+            bottom.rectangle.x = this.rectangle.x;
+            bottom.rectangle.width = this.rectangle.width;
+            bottom.rectangle.y = this.rectangle.y + this.rectangle.height;
+            bottom.rectangle.height = baseHeight - this.rectangle.height;
+
+            // R coordinates
+            right.rectangle.x = this.rectangle.x + this.rectangle.width;
+            right.rectangle.width = baseWidth - this.rectangle.width;
+            right.rectangle.y = this.rectangle.y;
+            right.rectangle.height = baseHeight;
+
+            right.computeTreemap();
+            bottom.computeTreemap();
+
+        } else if (right != null) {
+
+            double baseWidth = this.rectangle.width;
+
+            // C coordinates - Only the width changes
+            this.rectangle.width = (this.getCentralWeight() / (this.getCentralWeight() + right.getFullWeight())) * baseWidth;
+
+            // R coordinates
+            right.rectangle.x = this.rectangle.x + this.rectangle.width;
+            right.rectangle.width = baseWidth - this.rectangle.width;
+            right.rectangle.y = this.rectangle.y;
+            right.rectangle.height = this.rectangle.height;
+
+            right.computeTreemap();
+
+        } else if (bottom != null) {
+
+            double baseHeight = this.rectangle.height;
+
+            // C coordinates - Only the height changes
+            this.rectangle.height = (this.getCentralWeight() / (this.getCentralWeight() + bottom.getFullWeight())) * baseHeight;
+
+            // B coordinates
+            bottom.rectangle.x = this.rectangle.x;
+            bottom.rectangle.width = this.rectangle.width;
+            bottom.rectangle.y = this.rectangle.y + this.rectangle.height;
+            bottom.rectangle.height = baseHeight - this.rectangle.height;
+
+            bottom.computeTreemap();
+        }
+
+
+        if (central != null) {
+            central.rectangle = this.rectangle;
+            central.computeTreemap();
+        }
+
     }
 }
