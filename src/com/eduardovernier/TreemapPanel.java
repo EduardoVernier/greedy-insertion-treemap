@@ -7,11 +7,9 @@ import java.awt.*;
 public class TreemapPanel extends JPanel {
 
     Container root;
-    private Rectangle canvas;
 
-    public TreemapPanel(Container root, Rectangle canvas) {
+    public TreemapPanel(Container root) {
         this.root = root;
-        this.canvas = canvas;
     }
 
     @Override
