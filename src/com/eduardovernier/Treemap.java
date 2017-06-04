@@ -2,12 +2,16 @@ package com.eduardovernier;
 
 import javax.swing.*;
 
-public class TreemapManager {
+public class Treemap {
 
-    private static Container root;
-    private static Rectangle canvas = new Rectangle(0, 0, 700, 700);
+    private Container root;
+    private Rectangle canvas;
 
-    public static void addOrUpdateItem(String id, double value) {
+    public void setCanvas(double x, double y, double width, double height) {
+        this.canvas = new Rectangle(x, y, width, height);
+    }
+
+    public void addItem(String id, double value) {
 
         if (root == null) {
             root = new Container(id, value);
@@ -62,8 +66,42 @@ public class TreemapManager {
         root.computeTreemap();
     }
 
+    public void updateItem(String id, Double weight) {
+        Container container = findContainer(root, id);
+        container.weight = weight;
+        root.rectangle = new Rectangle(canvas.x, canvas.y, canvas.width, canvas.height);
+        root.computeTreemap();
+    }
 
-    public static void drawTreemap() {
+    private Container findContainer(Container container, String itemId) {
+
+        if (container.id.equals(itemId)) {
+            return container;
+        } else {
+            Container found = null;
+            if (container.central != null) {
+                Container temp = findContainer(container.central, itemId);
+                if (temp != null) {
+                    found = temp;
+                }
+            }
+            if (container.right != null) {
+                Container temp = findContainer(container.right, itemId);
+                if (temp != null) {
+                    found = temp;
+                }
+            }
+            if (container.bottom != null) {
+                Container temp = findContainer(container.bottom, itemId);
+                if (temp != null) {
+                    found = temp;
+                }
+            }
+            return found;
+        }
+    }
+
+    public void drawTreemap() {
 
         JFrame frame = new JFrame("Insertion Treemap");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,7 +111,7 @@ public class TreemapManager {
         frame.setVisible(true);
     }
 
-    private static Container findWorstAspectRatioContainer(Container container) {
+    private Container findWorstAspectRatioContainer(Container container) {
 
         Container bestCandidate = container;
         double worstAR = container.rectangle.getAspectRatio();
