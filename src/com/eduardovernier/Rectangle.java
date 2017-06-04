@@ -18,4 +18,21 @@ public class Rectangle {
     public double getArea() {
         return width * height;
     }
+
+    public void reposition(Rectangle oldCanvas, Rectangle newCanvas) {
+        this.x = ((this.x - oldCanvas.x) / oldCanvas.width) * newCanvas.width + newCanvas.x;
+        this.y = ((this.y - oldCanvas.y) / oldCanvas.height) * newCanvas.height + newCanvas.y;
+        this.width = (newCanvas.width / oldCanvas.width) * this.width;
+        this.height = (newCanvas.height / oldCanvas.height) * this.height;
+    }
+
+    @Override
+    public String toString() {
+        return "Rectangle{" +
+                "x=" + x +
+                ", y=" + y +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }

@@ -8,8 +8,32 @@ public class Treemap {
     private Rectangle canvas;
 
     public void setCanvas(double x, double y, double width, double height) {
-        this.canvas = new Rectangle(x, y, width, height);
+
+        Rectangle newCanvas = new Rectangle(x, y, width, height);
+        // Transform all rectangles
+        if (canvas != null) {
+            Rectangle oldCanvas = new Rectangle(canvas.x, canvas.y, canvas.width, canvas.height);
+            transformRectangles(root, oldCanvas, newCanvas);
+        }
+        // Update canvas
+        this.canvas = newCanvas;
     }
+
+    private void transformRectangles(Container container, Rectangle oldCanvas, Rectangle newCanvas) {
+
+        container.rectangle.reposition(oldCanvas, newCanvas);
+
+        if (container.central != null) {
+            transformRectangles(container.central, oldCanvas, newCanvas);
+        }
+        if (container.right != null) {
+            transformRectangles(container.right, oldCanvas, newCanvas);
+        }
+        if (container.bottom != null) {
+            transformRectangles(container.bottom, oldCanvas, newCanvas);
+        }
+    }
+
 
     public void addItem(String id, double value) {
 
