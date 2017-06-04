@@ -29,6 +29,7 @@ public class Package {
             // Look for entity in entity list
             for (Entity entity : entityList) {
                 if (entity.id.equals(entityName)) {
+                    entity.weight = weight;
                     treemap.updateItem(entityName, weight);
                     return;
                 }
@@ -42,21 +43,27 @@ public class Package {
             for (Package childPackage : packageList) {
                 if (childPackage.id.equals(packageName)) {
                     childPackage.addOrUpdateItem(path, weight);
+                    treemap.updateItem(packageName, childPackage.getWeight());
+                    updateTreemapCoords();
                     return;
                 }
             }
             // Needs to be created
             Package newPackage = new Package(packageName);
             packageList.add(newPackage);
+            treemap.addItem(packageName, weight);
+            updateTreemapCoords();
             newPackage.addOrUpdateItem(path, weight);
         }
-        // After every new addition, the treemap state must be updated
-        updateTreemap();
     }
 
-    public void updateTreemap() {
-
+    private void updateTreemapCoords() {
+        for (Package pack : packageList) {
+            Rectangle canvas = treemap.findContainer(treemap.root, pack.id).rectangle;
+            pack.setCanvas(canvas.x, canvas.y, canvas.width, canvas.height);
+        }
     }
+
 
     public double getWeight() {
 
@@ -64,11 +71,9 @@ public class Package {
         for (Entity entity : entityList) {
             weight += entity.weight;
         }
-
         for (Package childPackage : packageList) {
             weight += childPackage.getWeight();
         }
-
         return weight;
     }
 

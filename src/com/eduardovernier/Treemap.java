@@ -1,11 +1,9 @@
 package com.eduardovernier;
 
-import javax.swing.*;
-
 public class Treemap {
 
-    private Container root;
-    private Rectangle canvas;
+    public Container root;
+    public Rectangle canvas;
 
     public void setCanvas(double x, double y, double width, double height) {
 
@@ -22,7 +20,6 @@ public class Treemap {
     private void transformRectangles(Container container, Rectangle oldCanvas, Rectangle newCanvas) {
 
         container.rectangle.reposition(oldCanvas, newCanvas);
-
         if (container.central != null) {
             transformRectangles(container.central, oldCanvas, newCanvas);
         }
@@ -97,7 +94,7 @@ public class Treemap {
         root.computeTreemap();
     }
 
-    private Container findContainer(Container container, String itemId) {
+    public Container findContainer(Container container, String itemId) {
 
         if (container.id.equals(itemId)) {
             return container;
@@ -123,16 +120,6 @@ public class Treemap {
             }
             return found;
         }
-    }
-
-    public void drawTreemap() {
-
-        JFrame frame = new JFrame("Insertion Treemap");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        TreemapPanel panel = new TreemapPanel(root);
-        frame.getContentPane().add(panel);
-        frame.setSize(700, 700);
-        frame.setVisible(true);
     }
 
     private Container findWorstAspectRatioContainer(Container container) {
