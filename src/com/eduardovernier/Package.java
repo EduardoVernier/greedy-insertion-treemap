@@ -31,12 +31,14 @@ public class Package {
                 if (entity.id.equals(entityName)) {
                     entity.weight = weight;
                     treemap.updateItem(entityName, weight);
+                    updateTreemapCoords();
                     return;
                 }
             }
             // Else add it to entity list and treemap
             entityList.add(new Entity(entityName, weight));
             treemap.addItem(entityName, weight);
+            updateTreemapCoords();
         } else {
             String packageName = path.remove(0);
             // Package already exists
@@ -54,6 +56,7 @@ public class Package {
             treemap.addItem(packageName, weight);
             updateTreemapCoords();
             newPackage.addOrUpdateItem(path, weight);
+            updateTreemapCoords();
         }
     }
 
