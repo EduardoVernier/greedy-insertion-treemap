@@ -46,8 +46,9 @@ public class Treemap {
                     System.out.println("Right insert " + receiver.right.id + " into " + receiver.id);
                 } else {
                     if (receiver.central == null) {
-                        receiver.central = new Container(receiver.id + "_m", receiver.weight);
+                        receiver.central = new Container(receiver.id, receiver.weight);
                         receiver.central.right = new Container(id, value);
+                        receiver.id = receiver.id + "_";
                     } else {
                         if (receiver.central.right == null) {
                             receiver.central.right = new Container(id, value);
@@ -66,8 +67,9 @@ public class Treemap {
                     System.out.println("Bottom insert " + receiver.bottom.id + " into " + receiver.id);
                 } else {
                     if (receiver.central == null) {
-                        receiver.central = new Container(receiver.id + "_m", receiver.weight);
+                        receiver.central = new Container(receiver.id, receiver.weight);
                         receiver.central.bottom = new Container(id, value);
+                        receiver.id = receiver.id + "_";
                     } else {
                         if (receiver.central.bottom == null) {
                             receiver.central.bottom = new Container(id, value);

@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -32,8 +31,7 @@ public class Main {
             panel.repaint();
         }
 
-        TimeUnit.SECONDS.sleep(1);
-//
+//        TimeUnit.SECONDS.sleep(1);
 //        rootPackage.setCanvas(20, 20, 500, 200);
 //        rootPackage.treemap.drawTreemap();
     }
