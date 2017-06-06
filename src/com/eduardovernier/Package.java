@@ -64,6 +64,7 @@ public class Package {
         for (Package pack : packageList) {
             Rectangle canvas = treemap.findContainer(treemap.root, pack.id).rectangle;
             pack.setCanvas(canvas.x, canvas.y, canvas.width, canvas.height);
+            pack.updateTreemapCoords();
         }
     }
 
