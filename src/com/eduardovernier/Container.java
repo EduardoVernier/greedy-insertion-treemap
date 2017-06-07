@@ -32,7 +32,7 @@ public class Container {
 
     public void paint(Graphics2D graphics) {
 
-        if (weight > 0) {
+        if (!Double.isNaN(rectangle.x) && !Double.isNaN(rectangle.y) && !Double.isNaN(rectangle.width) && !Double.isNaN(rectangle.height)) {
             graphics.setColor(new Color(0, 0, 0, 255));
             graphics.setStroke(new BasicStroke(2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
             graphics.draw(new Rectangle2D.Double(rectangle.x, rectangle.y, rectangle.width, rectangle.height));
