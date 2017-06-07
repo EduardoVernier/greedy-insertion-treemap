@@ -27,7 +27,6 @@ public class TreemapPanel extends JPanel {
         }
         for (Package childPackage : pack.packageList) {
             paintTreemap(childPackage, g);
-            // childPackage.treemap.root.paint(g);
         }
     }
 }

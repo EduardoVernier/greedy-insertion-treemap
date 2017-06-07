@@ -8,8 +8,6 @@ import java.awt.geom.Rectangle2D;
 //  |---| R |
 //  | B |   |
 //  ---------
-
-
 public class Container {
 
     String id;
@@ -56,7 +54,6 @@ public class Container {
     }
 
     public double getFullWeight() {
-
         double fullWeight = this.weight;
         if (central != null) {
             fullWeight += central.getFullWeight();

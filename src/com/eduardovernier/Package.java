@@ -5,30 +5,27 @@ import java.util.List;
 
 public class Package {
 
-    String id;
-    List<Package> packageList = new ArrayList<>();
-    List<Entity> entityList = new ArrayList<>(); // Not sure if necessary, we'll see
-    Treemap treemap = new Treemap();
-    Rectangle canvas;
+    String id; // Package name
+    List<Package> packageList = new ArrayList<>(); // Children package
+    List<Entity> entityList = new ArrayList<>(); // Used to check whether a change is a insertion, modification or deletion
+    Treemap treemap = new Treemap(); // Each package holds a treemap
 
     public Package(String id) {
         this.id = id;
     }
 
     public void setCanvas(double x, double y, double width, double height) {
-        this.canvas = new Rectangle(x, y, width, height);
         this.treemap.setCanvas(x, y, width, height);
     }
 
     public void addOrUpdateItem(List<String> path, Double weight) {
 
-        if (path.size() == 0) {
-            System.out.println("Zero size path."); // Shouldn't happen
-        } else if (path.size() == 1) {
+        if (path.size() == 1) {
+            // Adding a leaf
             String entityName = path.get(0);
             // Look for entity in entity list
             for (Entity entity : entityList) {
-                if (entity.id.equals(entityName)) {
+                if (entity.id.equals(entityName)) { // If found, update its value and recompute treemap
                     entity.weight = weight;
                     treemap.updateItem(entityName, weight);
                     updateTreemapCoords();
@@ -40,23 +37,23 @@ public class Package {
             treemap.addItem(entityName, weight);
             updateTreemapCoords();
         } else {
+            // Adding a package
             String packageName = path.remove(0);
             // Package already exists
             for (Package childPackage : packageList) {
                 if (childPackage.id.equals(packageName)) {
                     childPackage.addOrUpdateItem(path, weight);
-                    treemap.updateItem(packageName, childPackage.getWeight());
-                    updateTreemapCoords();
+                    treemap.updateItem(packageName, childPackage.getWeight()); // Recompute treemap with updated value
+                    updateTreemapCoords(); // Update this.children size
                     return;
                 }
             }
             // Needs to be created
             Package newPackage = new Package(packageName);
             packageList.add(newPackage);
-            treemap.addItem(packageName, weight);
-            updateTreemapCoords();
+            treemap.addItem(packageName, weight); // Recompute treemap with new value
+            updateTreemapCoords(); // Update this.children size
             newPackage.addOrUpdateItem(path, weight);
-            updateTreemapCoords();
         }
     }
 
@@ -68,9 +65,7 @@ public class Package {
         }
     }
 
-
     public double getWeight() {
-
         double weight = 0;
         for (Entity entity : entityList) {
             weight += entity.weight;

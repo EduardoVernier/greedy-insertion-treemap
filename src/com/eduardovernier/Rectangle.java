@@ -15,10 +15,6 @@ public class Rectangle {
         return Math.min(width/height, height/width);
     }
 
-    public double getArea() {
-        return width * height;
-    }
-
     public void reposition(Rectangle oldCanvas, Rectangle newCanvas) {
         this.x = ((this.x - oldCanvas.x) / oldCanvas.width) * newCanvas.width + newCanvas.x;
         this.y = ((this.y - oldCanvas.y) / oldCanvas.height) * newCanvas.height + newCanvas.y;
