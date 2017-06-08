@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Parser {
 
@@ -103,6 +101,14 @@ public class Parser {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Shuffle
+        for (List<Entity> entityList : revisionList) {
+            // long seed = System.nanoTime();
+            long seed = 42;
+            Collections.shuffle(entityList, new Random(seed));
+        }
+
         return revisionList;
     }
 }

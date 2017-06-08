@@ -37,7 +37,7 @@ public class Container {
             graphics.setStroke(new BasicStroke(2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
             graphics.draw(new Rectangle2D.Double(rectangle.x, rectangle.y, rectangle.width, rectangle.height));
             // graphics.drawString(String.format("%.2f", rectangle.getAspectRatio()), (int) rectangle.x + 1, (int) rectangle.y + 10);
-            // graphics.drawString(id, (int) rectangle.x + 1, (int) rectangle.y + 20);
+           //  graphics.drawString(id, (int) rectangle.x + 1, (int) rectangle.y + 20);
         }
 
         if (central != null) {

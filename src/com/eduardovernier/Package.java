@@ -57,6 +57,57 @@ public class Package {
         }
     }
 
+
+    public void removeItem(List<String> path) {
+        if (path.size() == 1) {
+            // First remove from entityList
+            String entityName = path.get(0);
+            for (int i = 0; i < entityList.size(); ++i) {
+                if (entityList.get(i).id.equals(entityName)) {
+                    entityList.remove(i);
+                    break;
+                }
+            }
+            // Find and rearrange container
+            Container container = treemap.findContainer(treemap.root, entityName);
+
+            if (container.bottom == null && container.right == null){
+                container = null;
+                return;
+            }
+
+            if (container.right == null && container.bottom != null){
+                container.central = container.bottom;
+                container.bottom = null;
+                return;
+            }
+
+            if (container.bottom == null && container.right != null) {
+                container.central = container.right;
+                container.right = null;
+                return;
+            }
+
+            if (container.bottom != null && container.right != null) {
+                if (container.rectangle.width >= container.rectangle.height) {
+                    container.central = container.bottom;
+                    container.bottom = null;
+                } else {
+                    container.central = container.right;
+                    container.right = null;
+                }
+                return;
+            }
+        } else {
+            String packageName = path.remove(0);
+            for (Package childPackage : packageList) {
+                if (childPackage.id.equals(packageName)) {
+                    childPackage.removeItem(path);
+                }
+            }
+        }
+    }
+
     private void updateTreemapCoords() {
         for (Package pack : packageList) {
             Rectangle canvas = treemap.findContainer(treemap.root, pack.id).rectangle;
