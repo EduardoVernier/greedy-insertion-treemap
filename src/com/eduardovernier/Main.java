@@ -20,13 +20,8 @@ public class Main {
         if (args.length > 0) {
             List<List<Entity>> revisionList = Parser.parseCSVs(args[0]);
             initFrame(revisionList);
-
-//            for (int i = 1; i < revisionList.size() - 1; ++i) {
-//                advanceOneRevision();
-//                TimeUnit.SECONDS.sleep(1);
-//            }
-
         } else {
+            // TODO Fix this later
             Scanner scanner = new Scanner(System.in);
             while (true) {
 

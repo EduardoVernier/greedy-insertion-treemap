@@ -55,6 +55,7 @@ public class Package {
             updateTreemapCoords(); // Update this.children size
             newPackage.addOrUpdateItem(path, weight);
         }
+        // updateAnimationCoords();
     }
 
     private void updateTreemapCoords() {
@@ -70,6 +71,7 @@ public class Package {
 
     public void updateAnimationCoords() {
         treemap.saveRectangleState(treemap.root);
+        treemap.saveOldCanvas();
         for (Package pack : packageList) {
             pack.updateAnimationCoords();
         }

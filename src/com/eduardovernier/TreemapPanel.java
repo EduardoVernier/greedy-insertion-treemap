@@ -106,11 +106,15 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener 
 
     private void paintTreemapBorders(Package pack, Graphics2D graphics, int level) {
 
-        if (pack.getWeight() > 0 && pack.treemap.root != null) {
+        if (pack.getWeight() > 0 && pack.treemap.canvas != null && pack.treemap.oldCanvas != null) {
             graphics.setColor(new Color(0, 0, 0, 255));
             level = (level > 3) ? 3 : level;
             graphics.setStroke(new BasicStroke(4 - level, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-            graphics.draw(new Rectangle2D.Double(pack.treemap.canvas.x, pack.treemap.canvas.y, pack.treemap.canvas.width, pack.treemap.canvas.height));
+            double x = (1.0 - progress) * pack.treemap.oldCanvas.x + progress * pack.treemap.canvas.x;
+            double y = (1.0 - progress) * pack.treemap.oldCanvas.y + progress * pack.treemap.canvas.y;
+            double width = (1.0 - progress) * pack.treemap.oldCanvas.width + progress * pack.treemap.canvas.width;
+            double height = (1.0 - progress) * pack.treemap.oldCanvas.height + progress * pack.treemap.canvas.height;
+            graphics.draw(new Rectangle2D.Double(x, y, width, height));
         }
 
         for (Package childPackage : pack.packageList) {

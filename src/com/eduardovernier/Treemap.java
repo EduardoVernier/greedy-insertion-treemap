@@ -3,6 +3,7 @@ package com.eduardovernier;
 public class Treemap {
 
     public Container root;
+    public Rectangle oldCanvas; // For animation purposes
     public Rectangle canvas;
 
     public Treemap() {
@@ -10,6 +11,7 @@ public class Treemap {
     }
 
     public void setCanvas(double x, double y, double width, double height) {
+
         Rectangle newCanvas = new Rectangle(x, y, width, height);
         // Transform all rectangles if there was a change in size
         if (canvas != null) {
@@ -17,6 +19,10 @@ public class Treemap {
         }
         // Update canvas
         this.canvas = newCanvas;
+    }
+
+    public void saveOldCanvas() {
+        oldCanvas = new Rectangle(this.canvas.x, this.canvas.y, this.canvas.width, this.canvas.height);
     }
 
     private void transformRectangles(Container container, Rectangle oldCanvas, Rectangle newCanvas) {
@@ -95,11 +101,9 @@ public class Treemap {
         if (container.rectangle != null) {
             container.saveOldRectangle();
         }
-
         if (container.central != null) {
             saveRectangleState(container.central);
         }
-
         if (container.right != null) {
             saveRectangleState(container.right);
         }
