@@ -12,6 +12,9 @@ public class Rectangle {
     }
 
     public double getAspectRatio() {
+        if (width == 0 || height == 0) {
+            return 1;
+        }
         return Math.min(width/height, height/width);
     }
 
@@ -20,6 +23,11 @@ public class Rectangle {
         this.y = ((this.y - oldCanvas.y) / oldCanvas.height) * newCanvas.height + newCanvas.y;
         this.width = (newCanvas.width / oldCanvas.width) * this.width;
         this.height = (newCanvas.height / oldCanvas.height) * this.height;
+
+        this.x = (Double.isNaN(this.x) || Double.isInfinite(this.x)) ? 0 : this.x;
+        this.y = (Double.isNaN(this.y) || Double.isInfinite(this.y)) ? 0 : this.y;
+        this.width = (Double.isNaN(this.width) || Double.isInfinite(this.width)) ? 0 : this.width;
+        this.height = (Double.isNaN(this.height) || Double.isInfinite(this.height)) ? 0 : this.height;
     }
 
     @Override

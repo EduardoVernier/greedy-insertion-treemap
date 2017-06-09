@@ -5,6 +5,10 @@ public class Treemap {
     public Container root;
     public Rectangle canvas;
 
+    public Treemap() {
+        this.root = new Container("", 0.0);
+    }
+
     public void setCanvas(double x, double y, double width, double height) {
         Rectangle newCanvas = new Rectangle(x, y, width, height);
         // Transform all rectangles if there was a change in size

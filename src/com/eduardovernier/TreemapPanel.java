@@ -24,11 +24,13 @@ public class TreemapPanel extends JPanel {
 
     private void paintTreemap(Package pack, Graphics2D g, int level) {
         if (pack.treemap.root != null) {
-            paintTreemapBorder(g, pack.treemap.canvas, level);
             pack.treemap.root.paint(g);
         }
         for (Package childPackage : pack.packageList) {
             paintTreemap(childPackage, g, level + 1);
+        }
+        if (pack.treemap.root != null) {
+            paintTreemapBorder(g, pack.treemap.canvas, level);
         }
     }
 

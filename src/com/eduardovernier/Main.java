@@ -104,8 +104,8 @@ public class Main {
                     int index = revisionList.get(revision - 1).indexOf(entity);
                     Entity entityInLastRev = revisionList.get(revision - 1).get(index);
                     if (entityInLastRev.weight > 0) { // deletion
-                        rootPackage.removeItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))));
-                        // rootPackage.addOrUpdateItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))), entity.weight);
+                        //rootPackage.removeItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))));
+                        rootPackage.addOrUpdateItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))), entity.weight);
                     }
                 }
             } else {
@@ -113,8 +113,8 @@ public class Main {
                     int index = revisionList.get(revision + 1).indexOf(entity);
                     Entity entityInLastRev = revisionList.get(revision + 1).get(index);
                     if (entityInLastRev.weight > 0) { // deletion backwards -- addition
-                        rootPackage.removeItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))));
-                        // rootPackage.addOrUpdateItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))), entity.weight);
+                        //rootPackage.removeItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))));
+                        rootPackage.addOrUpdateItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))), entity.weight);
                     }
                 }
             }

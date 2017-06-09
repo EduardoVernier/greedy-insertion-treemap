@@ -32,8 +32,9 @@ public class Container {
 
     public void paint(Graphics2D graphics) {
 
-        if (!Double.isNaN(rectangle.x) && !Double.isNaN(rectangle.y) && !Double.isNaN(rectangle.width) && !Double.isNaN(rectangle.height)) {
-            graphics.setColor(new Color(0, 0, 0, 30));
+        if (!Double.isNaN(rectangle.x) && !Double.isNaN(rectangle.y) && !Double.isNaN(rectangle.width) && !Double.isNaN(rectangle.height) &&
+                Double.isFinite(rectangle.x) && Double.isFinite(rectangle.y) && Double.isFinite(rectangle.width) && Double.isFinite(rectangle.height)) {
+            graphics.setColor(new Color(200, 200, 200, 255));
             graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
             graphics.draw(new Rectangle2D.Double(rectangle.x, rectangle.y, rectangle.width, rectangle.height));
             // graphics.drawString(String.format("%.2f", rectangle.getAspectRatio()), (int) rectangle.x + 1, (int) rectangle.y + 10);
@@ -87,6 +88,14 @@ public class Container {
             this.rectangle.width = ((this.getCentralWeight() + bottom.getFullWeight()) / (this.getCentralWeight() + bottom.getFullWeight() + right.getFullWeight())) * baseWidth;
             this.rectangle.height = (this.getCentralWeight() / (this.getCentralWeight() + bottom.getFullWeight())) * baseHeight;
 
+            if (Double.isNaN(this.rectangle.height) || Double.isInfinite(this.rectangle.height)) {
+                this.rectangle.height = 0;
+            }
+
+            if (Double.isNaN(this.rectangle.width) || Double.isInfinite(this.rectangle.width)) {
+                this.rectangle.width = 0;
+            }
+
             // B coordinates
             bottom.rectangle.x = this.rectangle.x;
             bottom.rectangle.width = this.rectangle.width;
@@ -108,7 +117,9 @@ public class Container {
 
             // C coordinates - Only the width changes
             this.rectangle.width = (this.getCentralWeight() / (this.getCentralWeight() + right.getFullWeight())) * baseWidth;
-
+            if (Double.isNaN(this.rectangle.width) || Double.isInfinite(this.rectangle.width)) {
+                this.rectangle.width = 0;
+            }
             // R coordinates
             right.rectangle.x = this.rectangle.x + this.rectangle.width;
             right.rectangle.width = baseWidth - this.rectangle.width;
@@ -123,6 +134,9 @@ public class Container {
 
             // C coordinates - Only the height changes
             this.rectangle.height = (this.getCentralWeight() / (this.getCentralWeight() + bottom.getFullWeight())) * baseHeight;
+            if (Double.isNaN(this.rectangle.height) || Double.isInfinite(this.rectangle.height)) {
+                this.rectangle.height = 0;
+            }
 
             // B coordinates
             bottom.rectangle.x = this.rectangle.x;
@@ -133,11 +147,9 @@ public class Container {
             bottom.computeTreemap();
         }
 
-
         if (central != null) {
             central.rectangle = new Rectangle(this.rectangle.x, this.rectangle.y, this.rectangle.width, this.rectangle.height);
             central.computeTreemap();
         }
-
     }
 }
