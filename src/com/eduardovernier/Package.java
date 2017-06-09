@@ -68,51 +68,114 @@ public class Package {
                     break;
                 }
             }
-            // Find and rearrange container
+            // Find parent and rearrange container
+
+            Container parent = findParentOf(treemap.root, entityName);
+
+
+
             Container container = treemap.findContainer(treemap.root, entityName);
 
-            if (container.bottom == null && container.right == null){
-                container = null;
-                return;
+            if (container == null) {
+                int a = 1;
             }
 
-            if (container.right == null && container.bottom != null){
-                container.central = container.bottom;
-                container.bottom = null;
-                return;
-            }
-
-            if (container.bottom == null && container.right != null) {
-                container.central = container.right;
-                container.right = null;
-                return;
-            }
-
-            if (container.bottom != null && container.right != null) {
-                if (container.rectangle.width >= container.rectangle.height) {
-                    container.central = container.bottom;
-                    container.bottom = null;
-                } else {
-                    container.central = container.right;
-                    container.right = null;
-                }
-                return;
-            }
+//            if (container.bottom == null && container.right == null){
+//                // container = null; <- Java doesn't allow this unfortunately
+//                if (treemap.root.id.equals(entityName)) {
+//                    treemap.root.weight = 0.0;
+//                    treemap.root.rectangle.height = 0.00001;
+//                    treemap.root.rectangle.width = 0.00001;
+//                } else {
+//                    nullContainer(treemap.root, entityName);
+//                }
+//                return;
+//            }
+//
+//            if (container.right == null && container.bottom != null){
+//                container.central = container.bottom;
+//                container.bottom = null;
+//                return;
+//            }
+//
+//            if (container.bottom == null && container.right != null) {
+//                container.central = container.right;
+//                container.right = null;
+//                return;
+//            }
+//
+//            if (container.bottom != null && container.right != null) {
+//                if (container.rectangle.width >= container.rectangle.height) {
+//                    container.central = container.bottom;
+//                    container.bottom = null;
+//                } else {
+//                    container.central = container.right;
+//                    container.right = null;
+//                }
+//                return;
+//            }
         } else {
             String packageName = path.remove(0);
             for (Package childPackage : packageList) {
                 if (childPackage.id.equals(packageName)) {
                     childPackage.removeItem(path);
+                    return;
                 }
+            }
+        }
+    }
+
+    private Container findParentOf(Container container, String entityName) {
+        if (container.central.id.equals(entityName)) {
+
+        }
+
+        if (container.right.id.equals(entityName)) {
+
+        }
+
+        if (container.bottom.id.equals(entityName)) {
+
+        }
+    }
+
+    private void nullContainer(Container container, String entityName) {
+
+        if (container.central != null) {
+            if (container.central.id.equals(entityName)) {
+                container.central = null;
+                return;
+            } else {
+                nullContainer(container.central, entityName);
+            }
+        }
+
+        if (container.right != null) {
+            if (container.right.id.equals(entityName)) {
+                container.right = null;
+                return;
+            } else {
+                nullContainer(container.right, entityName);
+            }
+        }
+
+        if (container.bottom != null) {
+            if (container.bottom.id.equals(entityName)) {
+                container.bottom = null;
+            } else {
+                nullContainer(container.bottom, entityName);
             }
         }
     }
 
     private void updateTreemapCoords() {
         for (Package pack : packageList) {
-            Rectangle canvas = treemap.findContainer(treemap.root, pack.id).rectangle;
-            pack.setCanvas(canvas.x, canvas.y, canvas.width, canvas.height);
-            pack.updateTreemapCoords();
+            Container container = treemap.findContainer(treemap.root, pack.id);
+            if (container != null) {
+                Rectangle canvas = container.rectangle;
+                pack.setCanvas(canvas.x, canvas.y, canvas.width, canvas.height);
+                pack.updateTreemapCoords();
+            }
         }
     }
 

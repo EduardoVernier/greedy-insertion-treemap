@@ -7,37 +7,52 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
     public static int revision = 0;
+    public static Package rootPackage;
     private static List<List<Entity>> revisionList;
-    private static Package rootPackage;
     private static TreemapPanel panel;
     static KeyListener keyListener = new KeyListener() {
         @Override
-        public void keyTyped(KeyEvent keyEvent) {}
+        public void keyTyped(KeyEvent keyEvent) {
+        }
 
         @Override
-        public void keyPressed(KeyEvent keyEvent) {}
+        public void keyPressed(KeyEvent keyEvent) {
+        }
 
         @Override
         public void keyReleased(KeyEvent keyEvent) {
-
             if (keyEvent.getKeyCode() == KeyEvent.VK_X) {
-                revision++;
-                for (Entity entity : revisionList.get(revision)) {
-                    addEntity(entity, true);
-                }
+                advanceOneRevision();
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_Z) {
-                revision--;
-                for (Entity entity : revisionList.get(revision)) {
-                    addEntity(entity, false);
-                }
+                returnOneRevision();
+            }
+        }
+    };
+
+    private static void returnOneRevision() {
+        if (revision > 0) {
+            revision--;
+            for (Entity entity : revisionList.get(revision)) {
+                addEntity(entity, false);
             }
             panel.repaint();
         }
-    };
+    }
+
+    private static void advanceOneRevision() {
+        if (revision < revisionList.size() - 1) {
+            revision++;
+            for (Entity entity : revisionList.get(revision)) {
+                addEntity(entity, true);
+            }
+            panel.repaint();
+        }
+    }
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -55,11 +70,16 @@ public class Main {
             frame.addKeyListener(Main.keyListener);
             revisionList = Parser.parseCSVs(args[0]);
             for (Entity entity : revisionList.get(0)) {
-                if (entity.weight > 0.0) {
-                    rootPackage.addOrUpdateItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))), entity.weight);
-                    panel.repaint();
-                }
+                addEntity(entity, true);
+//                    TimeUnit.MILLISECONDS.sleep(300);
+                panel.repaint();
             }
+
+            for (int i = 1; i < revisionList.size() - 1; ++i) {
+                advanceOneRevision();
+                TimeUnit.SECONDS.sleep(1);
+            }
+
         } else {
             Scanner scanner = new Scanner(System.in);
             while (true) {
@@ -80,7 +100,7 @@ public class Main {
             rootPackage.addOrUpdateItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))), entity.weight);
         } else {
             if (forward) {
-                 if (entity.weight == 0.0 && revision > 0) {
+                if (entity.weight == 0.0 && revision > 0) {
                     int index = revisionList.get(revision - 1).indexOf(entity);
                     Entity entityInLastRev = revisionList.get(revision - 1).get(index);
                     if (entityInLastRev.weight > 0) { // deletion

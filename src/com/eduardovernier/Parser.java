@@ -104,9 +104,7 @@ public class Parser {
 
         // Shuffle
         for (List<Entity> entityList : revisionList) {
-            // long seed = System.nanoTime();
-            long seed = 42;
-            Collections.shuffle(entityList, new Random(seed));
+            Collections.shuffle(entityList, new Random(42));
         }
 
         return revisionList;

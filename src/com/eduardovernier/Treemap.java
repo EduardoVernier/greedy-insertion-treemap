@@ -38,7 +38,7 @@ public class Treemap {
         } else {
             Container receiver = findWorstAspectRatioContainer(root);
 
-                if (receiver.rectangle.width >= receiver.rectangle.height) {
+            if (receiver.rectangle.width >= receiver.rectangle.height) {
                 if (receiver.right == null) {
                     receiver.right = new Container(id, value);
                     // System.out.println("Right insert " + receiver.right.id + " into " + receiver.id);
