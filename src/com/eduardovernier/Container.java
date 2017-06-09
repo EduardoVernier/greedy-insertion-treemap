@@ -12,7 +12,8 @@ public class Container {
 
     String id;
     Double weight;
-    Rectangle rectangle = new Rectangle(0,0,0,0);
+    Rectangle oldRectangle;
+    Rectangle rectangle = new Rectangle(0, 0, 0, 0);
     Container central; // Container may contain another central inside it
     Container right;
     Container bottom;
@@ -30,27 +31,34 @@ public class Container {
                 '}';
     }
 
-    public void paint(Graphics2D graphics) {
-
-        if (!Double.isNaN(rectangle.x) && !Double.isNaN(rectangle.y) && !Double.isNaN(rectangle.width) && !Double.isNaN(rectangle.height) &&
-                Double.isFinite(rectangle.x) && Double.isFinite(rectangle.y) && Double.isFinite(rectangle.width) && Double.isFinite(rectangle.height)) {
-            graphics.setColor(new Color(200, 200, 200, 255));
-            graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-            graphics.draw(new Rectangle2D.Double(rectangle.x, rectangle.y, rectangle.width, rectangle.height));
-            // graphics.drawString(String.format("%.2f", rectangle.getAspectRatio()), (int) rectangle.x + 1, (int) rectangle.y + 10);
-           //  graphics.drawString(id, (int) rectangle.x + 1, (int) rectangle.y + 20);
+    public void setRectangle(Rectangle newRectangle) {
+        if (this.oldRectangle == null) {
+            this.oldRectangle = newRectangle;
+        } else {
+            this.oldRectangle = new Rectangle(this.rectangle.x, this.rectangle.y, this.rectangle.width, this.rectangle.height);
         }
+        this.rectangle = newRectangle;
+    }
+
+    public void paint(Graphics2D graphics, float animation) {
+
+        graphics.setColor(new Color(200, 200, 200, 255));
+        graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+        graphics.draw(new Rectangle2D.Double(this.rectangle.x, this.rectangle.y, this.rectangle.width, this.rectangle.height));
+
+        // graphics.drawString(String.format("%.2f", rectangle.getAspectRatio()), (int) rectangle.x + 1, (int) rectangle.y + 10);
+        //  graphics.drawString(id, (int) rectangle.x + 1, (int) rectangle.y + 20);
 
         if (central != null) {
-            central.paint(graphics);
+            central.paint(graphics, animation);
         }
 
         if (right != null) {
-            right.paint(graphics);
+            right.paint(graphics, animation);
         }
 
         if (bottom != null) {
-            bottom.paint(graphics);
+            bottom.paint(graphics, animation);
         }
     }
 
@@ -85,28 +93,30 @@ public class Container {
             double baseWidth = this.rectangle.width;
             double baseHeight = this.rectangle.height;
             // C coordinates
-            this.rectangle.width = ((this.getCentralWeight() + bottom.getFullWeight()) / (this.getCentralWeight() + bottom.getFullWeight() + right.getFullWeight())) * baseWidth;
-            this.rectangle.height = (this.getCentralWeight() / (this.getCentralWeight() + bottom.getFullWeight())) * baseHeight;
-
-            if (Double.isNaN(this.rectangle.height) || Double.isInfinite(this.rectangle.height)) {
-                this.rectangle.height = 0;
+            double cWidth = ((this.getCentralWeight() + bottom.getFullWeight()) / (this.getCentralWeight() + bottom.getFullWeight() + right.getFullWeight())) * baseWidth;
+            double cHeight = (this.getCentralWeight() / (this.getCentralWeight() + bottom.getFullWeight())) * baseHeight;
+            if (Double.isNaN(cHeight) || Double.isInfinite(cHeight)) {
+                cHeight = 0;
             }
-
-            if (Double.isNaN(this.rectangle.width) || Double.isInfinite(this.rectangle.width)) {
-                this.rectangle.width = 0;
+            if (Double.isNaN(cWidth) || Double.isInfinite(cWidth)) {
+                cWidth = 0;
             }
+            this.setRectangle(new Rectangle(this.rectangle.x, this.rectangle.y, cWidth, cHeight));
 
             // B coordinates
-            bottom.rectangle.x = this.rectangle.x;
-            bottom.rectangle.width = this.rectangle.width;
-            bottom.rectangle.y = this.rectangle.y + this.rectangle.height;
-            bottom.rectangle.height = baseHeight - this.rectangle.height;
+            double bX = this.rectangle.x;
+            double bWidth = this.rectangle.width;
+            double bY = this.rectangle.y + this.rectangle.height;
+            double bHeight = baseHeight - this.rectangle.height;
+            bottom.setRectangle(new Rectangle(bX, bY, bWidth, bHeight));
 
             // R coordinates
-            right.rectangle.x = this.rectangle.x + this.rectangle.width;
-            right.rectangle.width = baseWidth - this.rectangle.width;
-            right.rectangle.y = this.rectangle.y;
-            right.rectangle.height = baseHeight;
+            double rX = this.rectangle.x + this.rectangle.width;
+            double rWidth = baseWidth - this.rectangle.width;
+            double rY = this.rectangle.y;
+            double rHeight = baseHeight;
+            right.setRectangle(new Rectangle(rX, rY, rWidth, rHeight));
+
 
             right.computeTreemap();
             bottom.computeTreemap();
@@ -116,15 +126,18 @@ public class Container {
             double baseWidth = this.rectangle.width;
 
             // C coordinates - Only the width changes
-            this.rectangle.width = (this.getCentralWeight() / (this.getCentralWeight() + right.getFullWeight())) * baseWidth;
-            if (Double.isNaN(this.rectangle.width) || Double.isInfinite(this.rectangle.width)) {
-                this.rectangle.width = 0;
+            double cWidth = (this.getCentralWeight() / (this.getCentralWeight() + right.getFullWeight())) * baseWidth;
+            if (Double.isNaN(cWidth) || Double.isInfinite(cWidth)) {
+                cWidth = 0;
             }
+            this.setRectangle(new Rectangle(this.rectangle.x, this.rectangle.y, cWidth, this.rectangle.height));
+
             // R coordinates
-            right.rectangle.x = this.rectangle.x + this.rectangle.width;
-            right.rectangle.width = baseWidth - this.rectangle.width;
-            right.rectangle.y = this.rectangle.y;
-            right.rectangle.height = this.rectangle.height;
+            double rX = this.rectangle.x + this.rectangle.width;
+            double rWidth = baseWidth - this.rectangle.width;
+            double rY = this.rectangle.y;
+            double rHeight = this.rectangle.height;
+            right.setRectangle(new Rectangle(rX, rY, rWidth, rHeight));
 
             right.computeTreemap();
 
@@ -133,22 +146,24 @@ public class Container {
             double baseHeight = this.rectangle.height;
 
             // C coordinates - Only the height changes
-            this.rectangle.height = (this.getCentralWeight() / (this.getCentralWeight() + bottom.getFullWeight())) * baseHeight;
-            if (Double.isNaN(this.rectangle.height) || Double.isInfinite(this.rectangle.height)) {
-                this.rectangle.height = 0;
+            double cHeight = (this.getCentralWeight() / (this.getCentralWeight() + bottom.getFullWeight())) * baseHeight;
+            if (Double.isNaN(cHeight) || Double.isInfinite(cHeight)) {
+                cHeight = 0;
             }
+            this.setRectangle(new Rectangle(this.rectangle.x, this.rectangle.y, this.rectangle.width, cHeight));
 
             // B coordinates
-            bottom.rectangle.x = this.rectangle.x;
-            bottom.rectangle.width = this.rectangle.width;
-            bottom.rectangle.y = this.rectangle.y + this.rectangle.height;
-            bottom.rectangle.height = baseHeight - this.rectangle.height;
+            double bX = this.rectangle.x;
+            double bWidth = this.rectangle.width;
+            double bY = this.rectangle.y + this.rectangle.height;
+            double bHeight = baseHeight - this.rectangle.height;
+            bottom.setRectangle(new Rectangle(bX, bY, bWidth, bHeight));
 
             bottom.computeTreemap();
         }
 
         if (central != null) {
-            central.rectangle = new Rectangle(this.rectangle.x, this.rectangle.y, this.rectangle.width, this.rectangle.height);
+            central.setRectangle(new Rectangle(this.rectangle.x, this.rectangle.y, this.rectangle.width, this.rectangle.height));
             central.computeTreemap();
         }
     }
