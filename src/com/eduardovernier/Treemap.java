@@ -34,7 +34,6 @@ public class Treemap {
         }
     }
 
-
     public void addItem(String id, double value) {
 
         if (root == null) {
@@ -89,6 +88,24 @@ public class Treemap {
 
         root.rectangle = new Rectangle(canvas.x, canvas.y, canvas.width, canvas.height); // Reset canvas with parent measurements
         root.computeTreemap(); // Now that the layout reignign data structure was updated, recompute rectangles dimensions
+    }
+
+    public void saveRectangleState(Container container) {
+
+        if (container.rectangle != null) {
+            container.saveOldRectangle();
+        }
+
+        if (container.central != null) {
+            saveRectangleState(container.central);
+        }
+
+        if (container.right != null) {
+            saveRectangleState(container.right);
+        }
+        if (container.bottom != null) {
+            saveRectangleState(container.bottom);
+        }
     }
 
     public void updateItem(String id, Double weight) {

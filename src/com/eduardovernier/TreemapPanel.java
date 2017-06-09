@@ -59,6 +59,7 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener 
     }
 
     private void returnOneRevision() {
+        rootPackage.updateAnimationCoords();
         if (revision > 0) {
             revision--;
             for (Entity entity : revisionList.get(revision)) {
@@ -69,6 +70,7 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener 
     }
 
     private void advanceOneRevision() {
+        rootPackage.updateAnimationCoords();
         if (revision < revisionList.size() - 1) {
             revision++;
             for (Entity entity : revisionList.get(revision)) {

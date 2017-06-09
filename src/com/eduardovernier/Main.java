@@ -17,7 +17,6 @@ public class Main {
         rootPackage = new Package("");
         rootPackage.setCanvas(0, 0, 700, 700);
 
-
         if (args.length > 0) {
             List<List<Entity>> revisionList = Parser.parseCSVs(args[0]);
             initFrame(revisionList);

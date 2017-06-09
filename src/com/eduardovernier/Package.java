@@ -68,6 +68,16 @@ public class Package {
         }
     }
 
+    public void updateAnimationCoords() {
+        treemap.saveRectangleState(treemap.root);
+        for (Package pack : packageList) {
+            pack.updateAnimationCoords();
+        }
+    }
+
+//    saveRectangleState(root); // This is used for animating
+
+
     public double getWeight() {
         double weight = 0;
         for (Entity entity : entityList) {
