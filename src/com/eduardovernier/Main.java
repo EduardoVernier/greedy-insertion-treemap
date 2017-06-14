@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static JFrame frame;
     private static Package rootPackage;
-    private static JFrame frame;
     private static TreemapPanel panel;
 
     public static void main(String[] args) throws InterruptedException {
@@ -38,7 +38,7 @@ public class Main {
 
     private static void initFrame(List<List<Entity>> revisionList) {
         panel = new TreemapPanel(rootPackage, revisionList);
-        frame = new JFrame("Insertion Treemap");
+        frame = new JFrame("Insertion Treemap - Revision 0");
         frame.getContentPane().add(panel);
         frame.addKeyListener(panel);
         frame.setSize(700, 700);

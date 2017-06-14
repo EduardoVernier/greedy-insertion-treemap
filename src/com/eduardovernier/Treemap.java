@@ -16,6 +16,8 @@ public class Treemap {
         // Transform all rectangles if there was a change in size
         if (canvas != null) {
             transformRectangles(root, this.canvas, newCanvas);
+        } else {
+            this.oldCanvas = newCanvas;
         }
         // Update canvas
         this.canvas = newCanvas;

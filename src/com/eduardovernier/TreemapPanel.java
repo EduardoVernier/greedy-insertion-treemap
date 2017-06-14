@@ -145,5 +145,6 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener 
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_Z) {
             returnOneRevision();
         }
+        Main.frame.setTitle("Insertion Treemap - Revision " + revision);
     }
 }
