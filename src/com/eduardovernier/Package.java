@@ -34,7 +34,7 @@ public class Package {
             }
             // Else add it to entity list and treemap
             entityList.add(new Entity(entityName, weight));
-            treemap.addItem(entityName, weight);
+            treemap.addItem(entityName, weight, Kind.LEAF);
             updateTreemapCoords();
         } else {
             // Adding a package
@@ -51,7 +51,7 @@ public class Package {
             // Needs to be created
             Package newPackage = new Package(packageName);
             packageList.add(newPackage);
-            treemap.addItem(packageName, weight); // Recompute treemap with new value
+            treemap.addItem(packageName, weight, Kind.PARENT); // Recompute treemap with new value
             updateTreemapCoords(); // Update this.children size
             newPackage.addOrUpdateItem(path, weight);
         }

@@ -11,6 +11,7 @@ import java.awt.geom.Rectangle2D;
 public class Container {
 
     String id;
+    Kind kind;
     Double weight;
     Rectangle oldRectangle;
     Rectangle rectangle = new Rectangle(0, 0, 0, 0);
@@ -18,9 +19,10 @@ public class Container {
     Container right;
     Container bottom;
 
-    public Container(String id, Double weight) {
+    public Container(String id, Double weight, Kind kind) {
         this.id = id;
         this.weight = weight;
+        this.kind = kind;
     }
 
     @Override
@@ -46,6 +48,12 @@ public class Container {
             double y = (1.0 - animation) * oldRectangle.y + animation * rectangle.y;
             double width = (1.0 - animation) * oldRectangle.width + animation * rectangle.width;
             double height = (1.0 - animation) * oldRectangle.height + animation * rectangle.height;
+            if (kind == Kind.PARENT) {
+                graphics.setColor(new Color(200, 200, 200, 255));
+            } else if (kind == Kind.LEAF) {
+                graphics.setColor(Color.WHITE);
+            }
+            graphics.fill(new Rectangle2D.Double(x, y, width, height));
             graphics.setColor(new Color(200, 200, 200, 255));
             graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
             graphics.draw(new Rectangle2D.Double(x, y, width, height));

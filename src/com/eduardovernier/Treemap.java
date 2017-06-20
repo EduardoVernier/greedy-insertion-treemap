@@ -7,7 +7,7 @@ public class Treemap {
     public Rectangle canvas;
 
     public Treemap() {
-        this.root = new Container("", 0.0);
+        this.root = new Container("", 0.0, Kind.PARENT);
     }
 
     public void setCanvas(double x, double y, double width, double height) {
@@ -40,29 +40,30 @@ public class Treemap {
         }
     }
 
-    public void addItem(String id, double value) {
+    public void addItem(String id, double value, Kind kind) {
 
         if (root == null) {
-            root = new Container(id, value);
+            root = new Container(id, value, kind);
         } else {
             Container receiver = findWorstAspectRatioContainer(root);
 
             if (receiver.rectangle.width >= receiver.rectangle.height) {
                 if (receiver.right == null) {
-                    receiver.right = new Container(id, value);
+                    receiver.right = new Container(id, value, kind);
                     // System.out.println("Right insert " + receiver.right.id + " into " + receiver.id);
                 } else {
                     if (receiver.central == null) {
-                        receiver.central = new Container(receiver.id, receiver.weight);
-                        receiver.central.right = new Container(id, value);
+                        receiver.central = new Container(receiver.id, receiver.weight, receiver.kind);
+                        receiver.central.right = new Container(id, value, kind);
                         receiver.id = receiver.id + "_";
+                        receiver.kind = Kind.HELPER;
                     } else {
                         if (receiver.central.right == null) {
-                            receiver.central.right = new Container(id, value);
+                            receiver.central.right = new Container(id, value, kind);
                         } else {
                             // System.out.print("WEIRD CENTRAL RIGHT INSERT. ");
                             Container temp = receiver.central.right;
-                            receiver.central.right = new Container(id, value);
+                            receiver.central.right = new Container(id, value, kind);
                             receiver.central.right.right = temp;
                         }
                     }
@@ -70,20 +71,21 @@ public class Treemap {
                 }
             } else {
                 if (receiver.bottom == null) {
-                    receiver.bottom = new Container(id, value);
+                    receiver.bottom = new Container(id, value, kind);
                     // System.out.println("Bottom insert " + receiver.bottom.id + " into " + receiver.id);
                 } else {
                     if (receiver.central == null) {
-                        receiver.central = new Container(receiver.id, receiver.weight);
-                        receiver.central.bottom = new Container(id, value);
+                        receiver.central = new Container(receiver.id, receiver.weight, receiver.kind);
+                        receiver.central.bottom = new Container(id, value, kind);
                         receiver.id = receiver.id + "_";
+                        receiver.kind = Kind.HELPER;
                     } else {
                         if (receiver.central.bottom == null) {
-                            receiver.central.bottom = new Container(id, value);
+                            receiver.central.bottom = new Container(id, value, kind);
                         } else {
                             // System.out.print("WEIRD CENTRAL BOTTOM INSERT. ");
                             Container temp = receiver.central.bottom;
-                            receiver.central.bottom = new Container(id, value);
+                            receiver.central.bottom = new Container(id, value, kind);
                             receiver.central.bottom.bottom = temp;
                         }
                     }
