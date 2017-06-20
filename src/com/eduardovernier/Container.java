@@ -12,7 +12,7 @@ public class Container {
 
     String id;
     Double weight;
-    Rectangle oldRectangle = new Rectangle(0, 0, 0, 0);
+    Rectangle oldRectangle;
     Rectangle rectangle = new Rectangle(0, 0, 0, 0);
     Container central; // Container may contain another central inside it
     Container right;
@@ -37,7 +37,11 @@ public class Container {
 
     public void paint(Graphics2D graphics, float animation) {
 
-        if (!(id.endsWith("_") || id.equals(""))) {
+        if (this.oldRectangle == null) {
+            this.oldRectangle = new Rectangle(this.rectangle.x + this.rectangle.width / 2, this.rectangle.y + this.rectangle.height / 2, 1, 1);
+        }
+
+        if (getCentralWeight() > 0  && !(id.endsWith("_") || id.equals(""))) {
             double x = (1.0 - animation) * oldRectangle.x + animation * rectangle.x;
             double y = (1.0 - animation) * oldRectangle.y + animation * rectangle.y;
             double width = (1.0 - animation) * oldRectangle.width + animation * rectangle.width;

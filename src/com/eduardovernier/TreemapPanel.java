@@ -106,7 +106,11 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener 
 
     private void paintTreemapBorders(Package pack, Graphics2D graphics, int level) {
 
-        if (pack.getWeight() > 0 && pack.treemap.canvas != null && pack.treemap.oldCanvas != null) {
+        if (pack.treemap.oldCanvas == null) {
+            pack.treemap.oldCanvas = new Rectangle(pack.treemap.canvas.x + pack.treemap.canvas.width / 2, pack.treemap.canvas.y + pack.treemap.canvas.height / 2, 1, 1);
+        }
+
+        if (pack.getWeight() > 0 && pack.treemap.canvas != null) {
             graphics.setColor(new Color(0, 0, 0, 255));
             level = (level > 3) ? 3 : level;
             graphics.setStroke(new BasicStroke(4 - level, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));

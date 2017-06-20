@@ -77,9 +77,6 @@ public class Package {
         }
     }
 
-//    saveRectangleState(root); // This is used for animating
-
-
     public double getWeight() {
         double weight = 0;
         for (Entity entity : entityList) {
