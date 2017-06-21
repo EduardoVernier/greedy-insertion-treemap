@@ -3,6 +3,7 @@ package com.eduardovernier;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -14,22 +15,23 @@ public class Main {
 
 
         if (args.length > 0) {
+            // Normal mode (read dataset from disk)
             List<List<Entity>> revisionList = Parser.parseCSVs(args[0]);
             TreemapManager treemapManager = new TreemapManager(canvas, revisionList);
             initFrame(treemapManager);
         } else {
-            // TODO Fix this later
-//            Scanner scanner = new Scanner(System.in);
-//            while (true) {
-//
-//                String id = scanner.next();
-//                if (id.equals("-")) {
-//                    break;
-//                }
-//                Double weight = scanner.nextDouble();
-//                rootPackage.addOrUpdateItem(new ArrayList<>(Arrays.asList(id.split("/"))), weight);
-//                panel.repaint();
-//            }
+            // Interactive mode
+            Scanner scanner = new Scanner(System.in);
+            TreemapManager treemapManager = new TreemapManager(canvas);
+            initFrame(treemapManager);
+            while (true) {
+                String id = scanner.next();
+                if (id.equals("-")) {
+                    break;
+                }
+                Double weight = scanner.nextDouble();
+                treemapManager.addEntity(new Entity(id, weight), true);
+            }
         }
     }
 

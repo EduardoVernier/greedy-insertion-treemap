@@ -3,10 +3,9 @@ package com.eduardovernier;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
-public class TreemapPanel extends JPanel implements ActionListener, KeyListener, MouseMotionListener {
+public class TreemapPanel extends JPanel implements ActionListener, KeyListener, MouseMotionListener, MouseListener {
 
     private float progress = 0.0f;
     private TreemapManager treemapManager;
@@ -19,6 +18,7 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener,
         Timer timer = new Timer(30, this);
         timer.start();
         addMouseMotionListener(this);
+        addMouseListener(this);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener,
                     container.rectangle.y + container.rectangle.height / 2, 1, 1);
         }
 
-        if (container.getCentralWeight() > 0  && !(container.id.endsWith("_") || container.id.equals(""))) {
+        if (container.getCentralWeight() > 0 && !(container.id.endsWith("_") || container.id.equals(""))) {
             double x = (1.0 - progress) * container.oldRectangle.x + progress * container.rectangle.x;
             double y = (1.0 - progress) * container.oldRectangle.y + progress * container.rectangle.y;
             double width = (1.0 - progress) * container.oldRectangle.width + progress * container.rectangle.width;
@@ -81,7 +81,7 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener,
             if (container.kind == Kind.PARENT) {
                 graphics.setColor(new Color(200, 200, 200, 255));
             } else if (container.kind == Kind.LEAF) {
-                if (rectangle.contains(mousePosition)) {
+                if (this.mousePosition != null && rectangle.contains(this.mousePosition)) {
                     this.hoveredContainer = container;
                 }
                 graphics.setColor(Color.WHITE);
@@ -110,7 +110,8 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener,
     private void paintTreemapBorders(Package pack, Graphics2D graphics, int level) {
 
         if (pack.treemap.oldCanvas == null) {
-            pack.treemap.oldCanvas = new Rectangle(pack.treemap.canvas.x + pack.treemap.canvas.width / 2, pack.treemap.canvas.y + pack.treemap.canvas.height / 2, 1, 1);
+            pack.treemap.oldCanvas = new Rectangle(pack.treemap.canvas.x + pack.treemap.canvas.width / 2,
+                    pack.treemap.canvas.y + pack.treemap.canvas.height / 2, 1, 1);
         }
 
         if (pack.getWeight() > 0 && pack.treemap.canvas != null) {
@@ -126,10 +127,6 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener,
 
         for (Package childPackage : pack.packageList) {
             paintTreemapBorders(childPackage, graphics, level + 1);
-        }
-
-        if (mousePosition != null) {
-            graphics.draw(new Ellipse2D.Double(mousePosition.getX(), mousePosition.getY(), 2, 2));
         }
     }
 
@@ -169,6 +166,33 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener,
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
         mousePosition = mouseEvent.getPoint();
+        repaint();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+        this.hoveredContainer = null;
+        this.mousePosition = new Point(-1, -1);
         repaint();
     }
 }

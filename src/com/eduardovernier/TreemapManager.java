@@ -34,7 +34,7 @@ public class TreemapManager {
         return revision;
     }
 
-    private void addEntity(Entity entity, boolean forward) {
+    public void addEntity(Entity entity, boolean forward) {
         if (entity.weight > 0) {
             rootPackage.addOrUpdateItem(new ArrayList<>(Arrays.asList(entity.id.split("/"))), entity.weight);
         } else {
