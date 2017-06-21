@@ -1,8 +1,5 @@
 package com.eduardovernier;
 
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-
 //  ---------
 //  | C |   |
 //  |---| R |
@@ -35,44 +32,6 @@ public class Container {
 
     public void saveOldRectangle() {
         this.oldRectangle = new Rectangle(this.rectangle.x, this.rectangle.y, this.rectangle.width, this.rectangle.height);
-    }
-
-    public void paint(Graphics2D graphics, float animation) {
-
-        if (this.oldRectangle == null) {
-            this.oldRectangle = new Rectangle(this.rectangle.x + this.rectangle.width / 2, this.rectangle.y + this.rectangle.height / 2, 1, 1);
-        }
-
-        if (getCentralWeight() > 0  && !(id.endsWith("_") || id.equals(""))) {
-            double x = (1.0 - animation) * oldRectangle.x + animation * rectangle.x;
-            double y = (1.0 - animation) * oldRectangle.y + animation * rectangle.y;
-            double width = (1.0 - animation) * oldRectangle.width + animation * rectangle.width;
-            double height = (1.0 - animation) * oldRectangle.height + animation * rectangle.height;
-            if (kind == Kind.PARENT) {
-                graphics.setColor(new Color(200, 200, 200, 255));
-            } else if (kind == Kind.LEAF) {
-                graphics.setColor(Color.WHITE);
-            }
-            graphics.fill(new Rectangle2D.Double(x, y, width, height));
-            graphics.setColor(new Color(200, 200, 200, 255));
-            graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-            graphics.draw(new Rectangle2D.Double(x, y, width, height));
-        }
-
-        // graphics.drawString(String.format("%.2f", rectangle.getAspectRatio()), (int) rectangle.x + 1, (int) rectangle.y + 10);
-        //  graphics.drawString(id, (int) rectangle.x + 1, (int) rectangle.y + 20);
-
-        if (central != null) {
-            central.paint(graphics, animation);
-        }
-
-        if (right != null) {
-            right.paint(graphics, animation);
-        }
-
-        if (bottom != null) {
-            bottom.paint(graphics, animation);
-        }
     }
 
     public double getFullWeight() {

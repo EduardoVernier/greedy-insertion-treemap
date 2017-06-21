@@ -119,6 +119,9 @@ public class Treemap {
         // just update the container weight and recompute the treemap
         Container container = findContainer(root, id);
         container.weight = weight;
+        if (weight == 0.0) {
+            container.oldRectangle = null;
+        }
         root.rectangle = new Rectangle(canvas.x, canvas.y, canvas.width, canvas.height);
         root.computeTreemap();
     }
