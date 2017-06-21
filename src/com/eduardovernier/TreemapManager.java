@@ -65,6 +65,9 @@ public class TreemapManager {
             for (Entity entity : revisionList.get(revision)) {
                 addEntity(entity, false);
             }
+            for (Entity entity : revisionList.get(revision)) {
+                addEntity(entity, false);
+            }
         }
     }
 
@@ -72,6 +75,9 @@ public class TreemapManager {
         rootPackage.updateAnimationCoords();
         if (revision < revisionList.size() - 1) {
             revision++;
+            for (Entity entity : revisionList.get(revision)) {
+                addEntity(entity, true);
+            }
             for (Entity entity : revisionList.get(revision)) {
                 addEntity(entity, true);
             }
