@@ -8,17 +8,22 @@ import java.util.Scanner;
 public class Main {
 
     public static JFrame frame;
-    private static Rectangle canvas = new Rectangle(0, 0, 700, 700);
+    private static Rectangle canvas = new Rectangle(0, 0, 1000, 1000);
     private static TreemapPanel panel;
 
     public static void main(String[] args) throws InterruptedException {
-
 
         if (args.length > 0) {
             // Normal mode (read dataset from disk)
             List<List<Entity>> revisionList = Parser.parseCSVs(args[0]);
             TreemapManager treemapManager = new TreemapManager(canvas, revisionList);
             initFrame(treemapManager);
+
+//            while (true) {
+//                TimeUnit.MILLISECONDS.sleep(100);
+//                treemapManager.advanceOneRevision();
+//                panel.repaint();
+//            }
         } else {
             // Interactive mode
             Scanner scanner = new Scanner(System.in);
