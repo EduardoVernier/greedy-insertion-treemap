@@ -25,8 +25,7 @@ public class TreemapManager {
             addEntity(entity, true);
         }
         MetricsCollector.init(revisionList.size());
-        MetricsCollector.saveAspectRatios(rootPackage, revision);
-        MetricsCollector.getAspectRatioAverage(revision);
+        MetricsCollector.saveRectangles(rootPackage, revision, "");
     }
 
     public Package getRootPackage() {
@@ -84,9 +83,7 @@ public class TreemapManager {
             for (Entity entity : revisionList.get(revision)) {
                 addEntity(entity, true);
             }
-            MetricsCollector.saveAspectRatios(rootPackage, revision);
-            // MetricsCollector.getAspectRatioAverage(revision);
-            MetricsCollector.getMovementAverage(revision);
+            MetricsCollector.saveRectangles(rootPackage, revision, "");
         }
     }
 }
