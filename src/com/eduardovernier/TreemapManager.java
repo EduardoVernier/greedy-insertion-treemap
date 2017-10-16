@@ -85,5 +85,6 @@ public class TreemapManager {
             }
             MetricsCollector.saveRectangles(rootPackage, revision, "");
         }
+
     }
 }

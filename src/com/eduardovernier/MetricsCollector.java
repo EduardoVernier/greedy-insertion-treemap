@@ -1,14 +1,12 @@
 package com.eduardovernier;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MetricsCollector {
 
@@ -86,31 +84,25 @@ public class MetricsCollector {
 
     }
 
-    public static void writeRectanglesToFile(String fileName) {
-
-        List<String> lines = new ArrayList<>();
-        Path file = Paths.get("new-" + fileName + ".data");
-
-        lines.add(String.format("new %s %d", fileName, rectangles.size()));
+    public static void writeRectanglesToDir(String outputDir) {
+        new File(outputDir).mkdirs(); // In case path doesn't exist
+        int i = 0;
         for (HashMap<String, Rectangle> revision : rectangles) {
-            List<String> tempLines = new ArrayList<>();
+            Path file = Paths.get(String.format("%s/t%d.rect", Main.outputDir, i));
+            List<String> lines = new ArrayList<>();
             for (Map.Entry<String, Rectangle> entry : revision.entrySet()) {
                 Rectangle rectangle = entry.getValue();
-                tempLines.add(String.format("%s %.10f %.10f %.10f %.10f", entry.getKey().substring(1), rectangle.x, rectangle.y, rectangle.width, rectangle.height));
+                lines.add(String.format(Locale.ROOT, "%s %.10f %.10f %.10f %.10f", entry.getKey().substring(1), rectangle.x, rectangle.y, rectangle.width, rectangle.height));
             }
-            tempLines.sort(String.CASE_INSENSITIVE_ORDER);
-            for (String line : tempLines) {
-                lines.add(line);
+            lines.sort(String.CASE_INSENSITIVE_ORDER);
+            try {
+                Files.write(file, lines, Charset.forName("UTF-8"));
+                i++;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
             }
-            lines.add("");
         }
-
-        try {
-            Files.write(file, lines, Charset.forName("UTF-8"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("done.");
+        System.out.println(outputDir + "done.");
     }
 }
