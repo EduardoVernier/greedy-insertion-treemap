@@ -103,6 +103,6 @@ public class MetricsCollector {
                 return;
             }
         }
-        System.out.println(outputDir + "done.");
+        System.out.println(outputDir + " done.");
     }
 }

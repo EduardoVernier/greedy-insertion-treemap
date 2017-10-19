@@ -16,9 +16,9 @@ public class TreemapPanel extends JPanel implements ActionListener, KeyListener,
         this.treemapManager = treemapManager;
         // Timer used for screen refreshing -- 30ms
         Timer timer = new Timer(30, this);
-//        timer.start();
-//        addMouseMotionListener(this);
-//        addMouseListener(this);
+        timer.start();
+        addMouseMotionListener(this);
+        addMouseListener(this);
     }
 
     @Override
