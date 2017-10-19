@@ -3,15 +3,13 @@ package com.eduardovernier;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
 
     public static JFrame frame;
+    public static String outputDir;
     private static Rectangle canvas;
     private static TreemapPanel panel;
-    public static String outputDir;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -82,7 +80,7 @@ public class Main {
     }
 
     private static void argsError() {
-        System.out.println("Usage: java Main input_dir width height output_dir");
-        System.out.println("Width and Height are given in pixels (integers).");
+        System.out.println("Usage: java -cp ./bin com.eduardovernier.Main input_dir width height output_dir");
+        System.out.println("\tWidth and Height are given in pixels (integers).");
     }
 }
