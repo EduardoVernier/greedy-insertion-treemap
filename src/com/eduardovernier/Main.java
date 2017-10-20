@@ -42,6 +42,8 @@ public class Main {
                 }
 
                 MetricsCollector.writeRectanglesToDir(outputDir);
+                System.exit(0);
+                frame.dispose();
             }
         } else {
             argsError();
