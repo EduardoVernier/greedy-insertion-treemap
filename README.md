@@ -14,4 +14,4 @@ If you'd like to see and interact with the generated treemap, add the frag `-v`:
 
 `java -cp ./bin com.eduardovernier.Main -v input_dir width height`
 
-Some examples of datasets can be found [here](https://github.com/EduardoVernier/dynamic-map/tree/master/dataset)
+Some examples of datasets can be found [here](https://github.com/EduardoVernier/dynamic-map/tree/master/dataset).
